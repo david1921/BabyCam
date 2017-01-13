@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Twilio Video</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_incoming_call">IncomingCallActivity</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_make_call">MakeCallActivity</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_list_view_items">ListViewItems</string>
+</resources>

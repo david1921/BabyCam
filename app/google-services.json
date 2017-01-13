@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "168703008446",
+    "firebase_url": "https://daycarecam-cad2d.firebaseio.com",
+    "project_id": "daycarecam-cad2d",
+    "storage_bucket": "daycarecam-cad2d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:168703008446:android:aea12bddd3bb47fc",
+        "android_client_info": {
+          "package_name": "com.twilio.twiliovideo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "168703008446-br2r1hg39vr8p1b75kti1hi187lekil2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIBwwfFiwcOs4FuKoCZx6QnAWp_c2mo1M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
