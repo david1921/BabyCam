@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
     private String acceptResponse;
     private int caller = 0;
     private int skip_notify_caller = 0;
-    private String participant="534a6ca541e3b6e6";
+    private String participant;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,8 +149,6 @@ public class MainActivity extends AppCompatActivity {
         getWindow().addFlags(flags);
         setContentView(R.layout.activity_main);
 
-
-        Log.e("TAG", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ABOUT TO CREATE ACTIVITY");
    /*
     * Check camera and microphone permission.
     */
@@ -166,13 +164,16 @@ public class MainActivity extends AppCompatActivity {
         callActionFab.setOnClickListener(callActionFabClickListener());
         getCapabilityToken();
 
+        Toast.makeText(this,"ONCREATE",Toast.LENGTH_LONG);
 
         //initializeTwilioSdk(mAccessToken);
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client2 = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
+
     }
+
 
     private void getCapabilityToken() {
         try {Log.e(TAG + ">>>>>>>>>>>>>>>>>>>>>>", "my identity " + device_id);
@@ -194,10 +195,7 @@ public class MainActivity extends AppCompatActivity {
                         //save credentials to database
              //we dont even get here
                         Log.e("TAG", ">>>>>>>>>>>>>>>>>>>>>>>>>>>> WE FINISHED INITIALIZATION " + caller);
-                        if (caller == 0){
-                            makeCall();
-                            Log.e("TAG", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CALLER IS" + participant);
-                        }
+
                         new PostIdentityTask().execute(mAccessToken);
 
                     } catch (Exception e) {
@@ -212,7 +210,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeTwilioSdk(final String accessToken) {
         TwilioConversations.setLogLevel(TwilioConversations.LogLevel.DEBUG);
-        Log.e("TAG", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> INITIALIZATION" + TwilioConversations.isInitialized());
         if (!TwilioConversations.isInitialized()) {
             TwilioConversations.initialize(this.mContext, new TwilioConversations.InitListener() {
                 @Override
@@ -226,19 +223,16 @@ public class MainActivity extends AppCompatActivity {
                     // Initialize the camera capturer and start the camera preview
                     cameraCapturer = CameraCapturerFactory.createCameraCapturer(MainActivity.this, CameraCapturer.CameraSource.CAMERA_SOURCE_FRONT_CAMERA, previewFrameLayout, capturerErrorListener());
                     startPreview();
-                    // Register to receive incoming invites
-                    Log.e("TAG", ">>>>>>>>>>>>>>>>>>>>>>>>convo client " +  conversationsClient);
+
                     //conversattionCient is valid here but returns 'invalid participant call'
                     conversationsClient.listen();
                     //IF WE MADE THE CALL SKIP THIS
                     if ( skip_notify_caller!= 1) {
                         //if im not the caller tell the caller we are ready for the convo
                         new NotifyAcceptCallTask().execute(caller_firebase_token);
-                        Log.e("TAG", ">>>>>>>>>>>>>>>>>>>>>>>> WE ARE LISTENING NOW");
 
                     }else{
                         caller = 1;
-                        Log.e("TAG", ">>>>>>>>>>>>>>>>>>>>>>>> SETTING CALLER");
                     }
 
 
@@ -401,19 +395,6 @@ public class MainActivity extends AppCompatActivity {
             public void onIncomingInvite(ConversationsClient conversationsClient, IncomingInvite incomingInvite) {
                 Log.e(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>incoming call");
 
-
-//                Gson gson = new Gson();
-//                String json = gson.toJson(incomingInvite);
-//                SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
-//                SharedPreferences.Editor prefsEditor = mPrefs.edit();
-//                prefsEditor.putString("MyObject", json);
-//                prefsEditor.commit();
-//                Log.e(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>value");
-//                if (accepted == false) {
-//                    Log.e(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>about to notify");
-//                    sendNotification();
-//                }
-
                 if (conversation == null ) {
                     Log.e("TAG", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>INCONVERSATION");
                     LocalMedia localMedia = setupLocalMedia();
@@ -468,7 +449,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailedToConnectParticipant(Conversation conversation, Participant participant, TwilioConversationsException e) {
-
+                Log.e(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>>> onFailedToConnectParticipan" + e);
             }
 
             @Override
@@ -478,7 +459,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onParticipantConnected(Conversation conversation, Participant participant) {
-                Log.d(TAG, "onParticipantConnected: Participant connected");
+                Log.e(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>>> onParticipantConnected: Participant connected");
                 participant.setParticipantListener(participantListener());
             }
 
@@ -494,7 +475,7 @@ public class MainActivity extends AppCompatActivity {
         return new ParticipantListener() {
             @Override
             public void onVideoTrackAdded(Conversation conversation, Participant participant, VideoTrack videoTrack) {
-                Log.i(TAG, "onVideoTrackAdded " + participant.getIdentity());
+                Log.e(TAG, ">>>>>>>>> onVideoTrackAdded >>>>>>>>>> " + participant.getIdentity());
 
                 // Remote participant
                 participantVideoRenderer = new VideoViewRenderer(MainActivity.this, participantContainer);
@@ -502,7 +483,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onFirstFrame() {
-                        Log.i(TAG, "Participant onFirstFrame");
+                        Log.e(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Participant onFirstFrame");
                     }
 
                     @Override
@@ -696,7 +677,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-
+        Toast.makeText(this,"ONSTART",Toast.LENGTH_LONG);
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client2.connect();
@@ -711,8 +692,22 @@ public class MainActivity extends AppCompatActivity {
                 Uri.parse("android-app://com.twilio.twiliovideo/http/host/path")
         );
         AppIndex.AppIndexApi.start(client2, viewAction);
+
+
+
     }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.e(TAG , ">>>>>>>>>>>>>>>>>>>>>> ON PAUSE");
+        int flags;
+        if (caller == 1){
+            keepScreenOn();
+            makeCall();
+        }
+    }
     @Override
     public void onStop() {
         super.onStop();
@@ -798,6 +793,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void keepScreenOn(){
+        PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
+        PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP
+                | PowerManager.ON_AFTER_RELEASE, "MyWakeLock");
+        wakeLock.acquire();
+    }
 
 
 }
