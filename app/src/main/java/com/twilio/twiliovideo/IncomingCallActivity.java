@@ -25,8 +25,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.wdullaer.swipeactionadapter.SwipeActionAdapter;
-import com.wdullaer.swipeactionadapter.SwipeDirection;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,8 +35,9 @@ public class IncomingCallActivity extends Activity {
     private  ImageView pickUpIcon;
     private  String callerDevice = "";
     private  String callerFirebaseToken= "";
+    ScaleAnimation scaleAnimation;
   float x1,x2;
-    SwipeActionAdapter swipeAdapter;
+   // SwipeActionAdapter swipeAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,8 +59,7 @@ public class IncomingCallActivity extends Activity {
         pickUpIcon = (ImageView) findViewById(R.id.callPickUpIcon);
         pickUpIcon.setImageResource(R.drawable.pickup);
 
-        //Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.scale_anim);
-        ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 3.0f, 1f, 3.0f,  pickUpIcon.getWidth() / 2.0f,  pickUpIcon.getHeight() / 2.0f);
+        scaleAnimation = new ScaleAnimation(1/3f, 1f, 1/3f, 1.0f,  pickUpIcon.getWidth() / 2.0f,  pickUpIcon.getHeight() / 2.0f);
         scaleAnimation.setDuration(3000);
         scaleAnimation.setInterpolator(this, android.R.interpolator.accelerate_decelerate);
         pickUpIcon.startAnimation(scaleAnimation);
@@ -74,6 +73,7 @@ public class IncomingCallActivity extends Activity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 Log.e("ScaleActivity", ">>>>>>>>>>>>>>>>>>>>>>>>>Scale ended");
+                pickUpIcon.startAnimation(scaleAnimation);
             }
 
             @Override
@@ -82,58 +82,20 @@ public class IncomingCallActivity extends Activity {
             }
         });
 
-   //     gd = new GestureDetector(this, this);
 
     }
 
-//    @Override
-//    public boolean onDown(MotionEvent e) {
-//        return false;
-//    }
-//
-//    @Override
-//    public void onShowPress(MotionEvent e) {
-//
-//    }
-//
-//    @Override
-//    public boolean onSingleTapUp(MotionEvent e) {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-//        return false;
-//    }
-//
-//    @Override
-//    public void onLongPress(MotionEvent e) {
-//
-//    }
-//
-//    @Override
-//    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-//        float sensitivity = 50;
-//        if(e2.getX() - e1.getX() > sensitivity){
-//            //Setting Image Resource to Right_Arrow on Swipe Right
-//            pickUpIcon.setImageResource(R.drawable.icon);
-//
-//            return true;
-//        }
-//        return true;
-//    }
+
 
     public boolean onTouchEvent(MotionEvent touchevent) {
         switch (touchevent.getAction()) {
             // when user first touches the screen we get x and y coordinate
             case MotionEvent.ACTION_DOWN: {
                 x1 = touchevent.getX();
-                // y1 = touchevent.getY();
                 break;
             }
             case MotionEvent.ACTION_UP: {
                 x2 = touchevent.getX();
-                //  y2 = touchevent.getY();
 
 
                 if (x1 < x2) {
@@ -146,7 +108,7 @@ public class IncomingCallActivity extends Activity {
                     getApplicationContext().startActivity(startIntent);
                 }
 
-                // if right to left sweep event on screen
+
                 if (x1 > x2) {
                     Toast.makeText(this, "Right to Left Swap Performed", Toast.LENGTH_LONG).show();
                     this.finish();
