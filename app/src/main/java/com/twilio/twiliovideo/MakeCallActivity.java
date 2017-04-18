@@ -31,8 +31,8 @@ public class MakeCallActivity extends AppCompatActivity {
     public static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
     //public static final String FIREBASE_TOKEN = "dLt6koxf2JM:APA91bEDYKKuPrI7kOic8Vww1lx4-8x97Nqm3DwyNWwFtMO2H-hFLfUEI76Man2b1tvDX9wwBO0DGnnF9IUr8qxS12XU_v97PjoBZzpxqQLxh_n7YtDrALMYC2rYPiXLBNGbpr9Pvx9C";
-    //public static final String FIREBASE_TOKEN = "cdGMkD1k4eY:APA91bHw2pHkOVwPtseNXN_MauiyEkGny0zaGCDdCrQZtOGARmp5wZgIRgPI4j-ZvYox7WsMKnwHDglF3VNKxdQL04FXLgN2iiC9F9yLLQmV_PmocQKzSuSw8r6MoP4IWXo27A-Katlp";
-    public static final String FIREBASE_AUTH_TOKEN = "key=AAAAJ0d7nr4:APA91bHBCPz3863G26C0t8EMD2nX4PNSdMNBV68wslxLV1aPMCKZqAE66MJgZQ3Gs2wFcKTuc_Q3YoewowEmGqFVdcwd1AwiP-p2oaLzcrYD63trioYZ6dsyF5KKFCfzgn7Eqg5nXElZnYD5uIRWdaR1dc66ciFbXQ";
+    public static final String FIREBASE_AUTH_TOKEN = "key=AAAAckEx92A:APA91bFjCYQH9-TEVmfVDrpmVRutTR1CB65zAL2PzLVOUESnc4FD4iezt67rH1jzeh9MVFKDbbaNYHcUwwAkskrFH1eg1ga_sFtj3RggZlR9z2SIuRZ8CXRuYNsxppDbmh-3uFcMKatx";
+    //public static final String FIREBASE_AUTH_TOKEN = "key=AAAAJ0d7nr4:APA91bHBCPz3863G26C0t8EMD2nX4PNSdMNBV68wslxLV1aPMCKZqAE66MJgZQ3Gs2wFcKTuc_Q3YoewowEmGqFVdcwd1AwiP-p2oaLzcrYD63trioYZ6dsyF5KKFCfzgn7Eqg5nXElZnYD5uIRWdaR1dc66ciFbXQ";
     ImageView image;
     String response;
     private String device_id;
@@ -111,6 +111,7 @@ public class MakeCallActivity extends AppCompatActivity {
         protected void onPostExecute(String feed) {
             // TODO: check this.exception
             // TODO: do something with the feed
+            Log.e("TAG",">>>>>>>>>>>>>>>>>>>>>>RESPONSE" + feed);
             response = feed;
         }
     }
